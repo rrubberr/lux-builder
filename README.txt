@@ -47,7 +47,13 @@ Notes:
 
 Compiling from source:
 ---------------------
-To compile from source, run "sh makelux.sh" in the same folder as this readme.
+ - To compile from source, you'll need to install Qt6 core, dbus,
+   gui, imageformats, and widgets from your package manager.
+
+ - You will also need fftw3, freetype, and common compression libraries
+   like lzma and bzip2. These are likely present on your system already.
+
+ - Then, run "sh makelux.sh" in the same folder as this README.
 
 Demo scenes:
 -----------
