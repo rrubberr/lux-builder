@@ -190,7 +190,8 @@ for i in "${!URLS[@]}"; do
             -DMZ_OPENSSL="OFF" \
             -DPNG_SHARED="OFF" \
             -DPNG_STATIC="ON" \
-            -DOPENEXR_FORCE_INTERNAL_OPENJPH="OFF"
+            -DOPENEXR_FORCE_INTERNAL_OPENJPH="OFF" \
+            -DBUILD_TESTING="OFF"
         
         make install -j"$(nproc)"
     else
@@ -222,6 +223,7 @@ for i in "${!URLS[@]}"; do
             -Dlzma="OFF" \
             -Dzstd="OFF" \
             -Dwebp="OFF" \
+            -Djbig="OFF" \
             -Dtiff-tools="OFF" \
             -Dtiff-tests="OFF" \
             -Dtiff-cxx="OFF"
