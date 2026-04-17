@@ -485,55 +485,6 @@ fi
 
 ######################################################################
 ######################################################################
-#Build LuxRays.
-######################################################################
-######################################################################
-
-cd $MAKELUX_DIR
-
-    #Clone if we haven't already.
-    if [ ! -d "$MAKELUX_DIR/luxrays" ]; then
-        git clone --recursive https://github.com/rrubberr/Flatpak-LuxRays/ -b FeatureRemoval luxrays
-    fi
-
-#Build LuxRays.
-LUXRAYS_LIB=$LIB_DIR/libluxrays.a
-
-    if [ ! -f "$LUXRAYS_LIB" ]; then
-        echo "LuxRays not found. Building..."
-
-    if [ -d "$MAKELUX_DIR/luxrays/build" ]; then
-        rm -rf $MAKELUX_DIR/luxrays/build
-    fi
-
-    mkdir $MAKELUX_DIR/luxrays/build
-    cd $MAKELUX_DIR/luxrays/build
-
-    #Configure.
-    cmake .. -DCMAKE_CXX_FLAGS="-w -fPIC -std=c++14 -I $INC_DIR -DBOOST_BIND_GLOBAL_PLACEHOLDERS" \
-        -DCMAKE_BUILD_TYPE="Release" \
-        -DCMAKE_POLICY_VERSION_MINIMUM="3.5" \
-        -D_GLIBCXX_USE_CXX11_ABI="11" \
-        -DPYTHON_LIBRARY="$LIB_DIR/libpython3.5m.so" \
-        -DBoost_USE_STATIC_LIBS="ON" \
-        -DBoost_USE_STATIC_RUNTIME="ON" \
-        -DCMAKE_PREFIX_PATH="$BLD_DIR" \
-        -DCMAKE_POLICY_DEFAULT_CMP0074="NEW" \
-        -DCMAKE_POLICY_DEFAULT_CMP0148="OLD" \
-        -DCMAKE_POLICY_DEFAULT_CMP0167="OLD" \
-        -DCMAKE_EXE_LINKER_FLAGS="-static" \
-        -DCMAKE_FIND_LIBRARY_SUFFIXES=".a"
-
-    make -j$(nproc)
-
-    #Install libraries.
-    cp -av lib/. $LIB_DIR/.
-    cp -av $MAKELUX_DIR/luxrays/include/luxrays $INC_DIR/
-
-fi
-
-######################################################################
-######################################################################
 #Build LuxRender.
 ######################################################################
 ######################################################################
@@ -575,7 +526,6 @@ cmake .. -DCMAKE_CXX_FLAGS="-w -fPIC -std=c++14 -DBOOST_BIND_GLOBAL_PLACEHOLDERS
     -DPNG_LIBRARY="$LIB_DIR/libpng16.a" \
     -Dminizip-ng_LIBRARY="$LIB_DIR/libminizip.a" \
     -DJPEG_INCLUDE_DIR="$INC_DIR" \
-    -DLuxRays_HOME="$BLD_DIR" \
     -DPython3_ROOT_DIR="$BLD_DIR" \
     -DPython3_FIND_STRATEGY=LOCATION \
     -DPython3_FIND_REGISTRY=NEVER \
@@ -593,11 +543,14 @@ cd $MAKELUX_DIR/lux/build
 
 mkdir -p $MAKELUX_DIR/release
 
+cp -v pylux.so $MAKELUX_DIR/release
+cp -v liblux.so $MAKELUX_DIR/release
+
+cd $MAKELUX_DIR/lux/lib
+
 cp -v luxcomp $MAKELUX_DIR/release
 cp -v luxconsole $MAKELUX_DIR/release
 cp -v luxmerger $MAKELUX_DIR/release
 cp -v luxrender $MAKELUX_DIR/release
-cp -v pylux.so $MAKELUX_DIR/release
-cp -v liblux.so $MAKELUX_DIR/release
 
 echo "Success!"
