@@ -191,7 +191,8 @@ for i in "${!URLS[@]}"; do
             -DPNG_SHARED="OFF" \
             -DPNG_STATIC="ON" \
             -DOPENEXR_FORCE_INTERNAL_OPENJPH="OFF" \
-            -DBUILD_TESTING="OFF"
+            -DBUILD_TESTING="OFF" \
+            -DUSE_TBB="0"
         
         make install -j"$(nproc)"
     else
